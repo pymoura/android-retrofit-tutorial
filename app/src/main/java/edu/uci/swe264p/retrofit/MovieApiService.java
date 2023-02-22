@@ -9,6 +9,7 @@ public interface MovieApiService {
     @GET("movie/{id}")
     Call<Movie> getMovie(@Path("id") int id, @Query("api_key") String apiKey);
 
+    //Method to make API call to retrieve the top rated movies
     @GET("movie/top_rated")
     Call<TopRatedResponse> getTopRatedMovies(@Query("api_key") String apiKey);
 }
