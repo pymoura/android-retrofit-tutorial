@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class Movie {
     @SerializedName("vote_average")
-    private Float voteAverage;
+    private Number voteAverage;
     @SerializedName("poster_path")
     private String posterPath;
     @SerializedName("title")
@@ -22,7 +22,7 @@ public class Movie {
         this.overview = overview;
     }
 
-    public Float getVoteAverage() {
+    public Number getVoteAverage() {
         return voteAverage;
     }
 

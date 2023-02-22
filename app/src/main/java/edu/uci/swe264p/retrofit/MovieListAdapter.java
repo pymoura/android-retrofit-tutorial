@@ -1,30 +1,34 @@
 package edu.uci.swe264p.retrofit;
 
-
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.recyclerview.widget.RecyclerView;
+import com.squareup.picasso.OkHttp3Downloader;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.ViewHolder>{
 
-    private List<String> mData;
+    private List<Movie> mData;
+    private Context context;
 
-    MovieListAdapter(List<String> data) {
-        this.mData = data;
+    MovieListAdapter(Context context, List<Movie> mData) {
+        this.mData = mData;
+        this.context = context;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+
         TextView tvTitle;
         TextView tvRelease;
         TextView tvVote;
         TextView tvOverview;
-        ImageView ivMovie;
+        private ImageView ivMovie;
 
 
         ViewHolder(View itemView) {
@@ -45,12 +49,17 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
 
     @Override
     public void onBindViewHolder(MovieListAdapter.ViewHolder holder, int position) {
-        String movie = mData.get(position);
-        holder.ivMovie.setImageResource(position);
-        holder.tvTitle.setText(movie);
-//        holder.tvRelease.setText();
-//        holder.tvVote.setText();
-//        holder.tvOverview.setText();
+        holder.tvTitle.setText(mData.get(position).getTitle());
+        holder.tvVote.setText(mData.get(position).getVoteAverage().toString());
+        holder.tvRelease.setText(mData.get(position).getReleaseDate());
+        holder.tvOverview.setText(mData.get(position).getOverview());
+
+        Picasso.Builder builder = new Picasso.Builder(context);
+        builder.downloader(new OkHttp3Downloader(context));
+        builder.build().load("https://image.tmdb.org/t/p/w500" + mData.get(position).getPosterPath())
+                .placeholder((R.drawable.ic_launcher_background))
+                .error(R.drawable.ic_launcher_background)
+                .into(holder.ivMovie);
 
     }
 

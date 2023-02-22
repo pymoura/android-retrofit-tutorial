@@ -1,18 +1,12 @@
 package edu.uci.swe264p.retrofit;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
-import java.util.Arrays;
-import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -25,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
     static final String BASE_URL ="https://api.themoviedb.org/3/";
     static Retrofit retrofit = null;
     final static String API_KEY = "ebbed34e03675736fd9114b566cde8aa";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,50 +53,27 @@ public class MainActivity extends AppCompatActivity {
                     .build();
         }
         MovieApiService movieApiService = retrofit.create(MovieApiService.class);
-        // Call<Movie> call = movieApiService.getMovie(603, API_KEY);
-        Call<TopRatedResponse> topCall = movieApiService.getTopRatedMovies(API_KEY);
-//        call.enqueue(new Callback<Movie>() {
-//            @Override
-//            public void onResponse(Call<Movie> call, Response<Movie> response) {
-//                int[] ids = {R.id.txtTitle, R.id.txtReleaseDate, R.id.txtPoster,
-//                        R.id.txtVote, R.id.txtOverview};
-//                String[] values = {
-//                        response.body().getTitle(),
-//                        response.body().getReleaseDate(),
-//                        response.body().getPosterPath(),
-//                        response.body().getVoteAverage().toString(),
-//                        response.body().getOverview()
-//                };
-//                TextView tv;
-//                for (int i=0; i < ids.length; i++) {
-//                    tv = findViewById(ids[i]);
-//                    tv.setText(values[i]);
-//                }
-//            }
-//            @Override
-//            public void onFailure(Call<Movie> call, Throwable throwable) {
-//                Log.e(TAG, throwable.toString());
-//            }
-//        });
-        topCall.enqueue(new Callback<TopRatedResponse>() {
-
+        Call<Movie> call = movieApiService.getMovie(603, API_KEY);
+        call.enqueue(new Callback<Movie>() {
             @Override
-            public void onResponse(Call<TopRatedResponse> call, Response<TopRatedResponse> response) {
-
-
-                System.out.println(response.body());
-                List<Movie> movieList = response.body().getResults();
-                for (Movie movie: movieList) {
-                    String title = movie.getTitle();
-                    String posterPath = movie.getPosterPath();
-                    String releaseDate = movie.getReleaseDate();
-                    Number voteAverage = movie.getVoteAverage();
-                    String overview = movie.getOverview();
+            public void onResponse(Call<Movie> call, Response<Movie> response) {
+                int[] ids = {R.id.txtTitle, R.id.txtReleaseDate, R.id.txtPoster,
+                        R.id.txtVote, R.id.txtOverview};
+                String[] values = {
+                        response.body().getTitle(),
+                        response.body().getReleaseDate(),
+                        response.body().getPosterPath(),
+                        response.body().getVoteAverage().toString(),
+                        response.body().getOverview()
+                };
+                TextView tv;
+                for (int i=0; i < ids.length; i++) {
+                    tv = findViewById(ids[i]);
+                    tv.setText(values[i]);
                 }
             }
-
             @Override
-            public void onFailure(Call<TopRatedResponse> call, Throwable throwable) {
+            public void onFailure(Call<Movie> call, Throwable throwable) {
                 Log.e(TAG, throwable.toString());
             }
         });
